@@ -1,0 +1,80 @@
+{
+  "name": "@sequential-ui/vue",
+  "version": "0.1.0",
+  "description": "Vue 3 implementation of Sequential UI components",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./style.css": {
+      "import": "./dist/style.css",
+      "require": "./dist/style.css"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "vue",
+    "vue3",
+    "sequential",
+    "wizard",
+    "stepper",
+    "slides",
+    "multi-step",
+    "typescript",
+    "composition-api"
+  ],
+  "author": {
+    "name": "Brenden Chu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brendenchu/sequential-ui.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://github.com/brendenchu/sequential-ui/tree/main/packages/vue",
+  "bugs": {
+    "url": "https://github.com/brendenchu/sequential-ui/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "vue-tsc -b && vite build",
+    "dev": "vite build --watch",
+    "clean": "rm -rf dist",
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write src/",
+    "format:check": "prettier --check src/"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "dependencies": {
+    "@sequential-ui/core": "workspace:*",
+    "tailwindcss": "^3.4.3",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/tsconfig": "^0.5.1",
+    "eslint-plugin-vue": "^10.4.0",
+    "typescript": "^5.4.3",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^3.8.3",
+    "vue": "^3.4.21",
+    "vue-tsc": "^2.0.6"
+  }
+}

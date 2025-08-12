@@ -18,7 +18,16 @@
     "outDir": "dist",
     "rootDir": "src",
     "composite": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@sequential-ui/core": ["./packages/core/src"],
+      "@sequential-ui/vue": ["./packages/vue/src"]
+    }
   },
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/vue" },
+    { "path": "./playgrounds/vue" }
+  ],
   "exclude": ["node_modules", "**/dist", "**/build"]
 }

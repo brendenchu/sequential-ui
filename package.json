@@ -16,7 +16,9 @@
     "format": "pnpm -r run format",
     "format:check": "prettier --check .",
     "test": "pnpm -r run test",
-    "clean": "pnpm -r run clean"
+    "clean": "pnpm -r run clean",
+    "playground": "pnpm --filter sequential-ui-playground run dev",
+    "playground:build": "pnpm --filter sequential-ui-playground run build"
   },
   "devDependencies": {
     "@types/node": "^20.19.9",
