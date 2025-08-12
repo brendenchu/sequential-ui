@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["ES2022", "DOM"],
+    "types": ["node"],
+    "noEmit": false
+  },
+  "include": ["src/**/*", "index.html"],
+  "exclude": ["dist"]
+}
