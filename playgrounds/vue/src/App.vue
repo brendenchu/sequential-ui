@@ -3,9 +3,7 @@
     <div class="max-w-6xl mx-auto px-4">
       <!-- Header -->
       <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">
-          Sequential UI Playground
-        </h1>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Sequential UI Playground</h1>
         <p class="text-lg text-gray-600 mb-6">
           Interactive examples showcasing Sequential UI components
         </p>
@@ -53,38 +51,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, version as vueVersion } from "vue";
-import BasicWizardExample from "./examples/BasicWizardExample.vue";
-import ImageCarouselExample from "./examples/ImageCarouselExample.vue";
-import FormStepperExample from "./examples/FormStepperExample.vue";
-import ValidationExample from "./examples/ValidationExample.vue";
+import { ref, computed, version as vueVersion } from 'vue'
+import BasicWizardExample from './examples/BasicWizardExample.vue'
+import ImageCarouselExample from './examples/ImageCarouselExample.vue'
+import FormStepperExample from './examples/FormStepperExample.vue'
+import ValidationExample from './examples/ValidationExample.vue'
 
-const currentExample = ref("wizard");
+const currentExample = ref('wizard')
 
 const examples = [
   {
-    id: "wizard",
-    name: "Basic Wizard",
-    description: "A simple multi-step wizard with navigation controls",
+    id: 'wizard',
+    name: 'Basic Wizard',
+    description: 'A simple multi-step wizard with navigation controls',
   },
   {
-    id: "carousel",
-    name: "Image Carousel",
-    description: "An image carousel with loop navigation and indicators",
+    id: 'carousel',
+    name: 'Image Carousel',
+    description: 'An image carousel with loop navigation and indicators',
   },
   {
-    id: "form",
-    name: "Form Stepper",
-    description: "A multi-step form with validation and progress tracking",
+    id: 'form',
+    name: 'Form Stepper',
+    description: 'A multi-step form with validation and progress tracking',
   },
   {
-    id: "validation",
-    name: "Validation Demo",
-    description: "Demonstrates panel validation and conditional navigation",
+    id: 'validation',
+    name: 'Validation Demo',
+    description: 'Demonstrates panel validation and conditional navigation',
   },
-];
+]
 
 const currentExampleData = computed(() => {
-  return examples.find((example) => example.id === currentExample.value);
-});
+  return examples.find(example => example.id === currentExample.value)
+})
 </script>

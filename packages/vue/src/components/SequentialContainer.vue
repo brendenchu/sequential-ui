@@ -185,7 +185,7 @@ const currentPanelData = computed(() => {
 // Watch for external model value changes and sync to navigation
 watch(
   () => props.modelValue,
-  (newValue) => {
+  newValue => {
     if (newValue !== undefined && newValue !== navigation.currentPanel.value) {
       navigation.goTo(newValue)
     }

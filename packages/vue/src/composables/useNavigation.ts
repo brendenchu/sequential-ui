@@ -137,7 +137,7 @@ export function useNavigation(
   if (!Array.isArray(panels)) {
     watch(
       panels,
-      (newPanels) => {
+      newPanels => {
         updatePanels(newPanels)
       },
       { deep: true }

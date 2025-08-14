@@ -15,32 +15,21 @@
         >
           <!-- Simulated Image -->
           <div class="text-center text-white">
-            <div class="text-6xl mb-4">{{ panel?.emoji || "📷" }}</div>
+            <div class="text-6xl mb-4">{{ (panel as CarouselPanelDefinition)?.emoji || '📷' }}</div>
             <h3 class="text-2xl font-bold mb-2">
-              {{ panel?.title || "Image" }}
+              {{ (panel as CarouselPanelDefinition)?.title || 'Image' }}
             </h3>
-            <p class="text-blue-100">{{ panel?.description || "" }}</p>
+            <p class="text-blue-100">{{ (panel as CarouselPanelDefinition)?.description || '' }}</p>
           </div>
 
           <!-- Image overlay info -->
-          <div
-            class="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded"
-          >
-            {{ panel?.id || "image" }}
+          <div class="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-3 py-1 rounded">
+            {{ panel?.id || 'image' }}
           </div>
         </div>
       </template>
 
-      <template
-        #controls="{
-          canGoNext,
-          canGoPrevious,
-          next,
-          previous,
-          currentPanel,
-          totalPanels,
-        }"
-      >
+      <template #controls="{ canGoNext, canGoPrevious, next, previous, currentPanel, totalPanels }">
         <div class="flex items-center justify-between p-4 bg-white">
           <button
             @click="previous"
@@ -52,9 +41,7 @@
           </button>
 
           <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-600">
-              {{ currentPanel + 1 }} / {{ totalPanels }}
-            </span>
+            <span class="text-sm text-gray-600"> {{ currentPanel + 1 }} / {{ totalPanels }} </span>
             <button
               @click="toggleAutoPlay"
               :class="[
@@ -64,7 +51,7 @@
                   : 'bg-green-100 text-green-700 hover:bg-green-200',
               ]"
             >
-              {{ isAutoPlaying ? "Pause" : "Play" }}
+              {{ isAutoPlaying ? 'Pause' : 'Play' }}
             </button>
           </div>
 
@@ -87,9 +74,7 @@
             @click="goTo(index)"
             :class="[
               'w-3 h-3 rounded-full transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500',
-              index === currentPanel
-                ? 'bg-blue-600 scale-125'
-                : 'bg-gray-300 hover:bg-gray-400',
+              index === currentPanel ? 'bg-blue-600 scale-125' : 'bg-gray-300 hover:bg-gray-400',
             ]"
             :aria-label="`Go to image ${index + 1}`"
           />
@@ -109,9 +94,7 @@
 
       <div class="mt-4 space-y-2">
         <label class="flex items-center">
-          <span class="text-sm font-medium text-gray-700 mr-3"
-            >Auto-play speed:</span
-          >
+          <span class="text-sm font-medium text-gray-700 mr-3">Auto-play speed:</span>
           <input
             type="range"
             v-model="autoPlaySpeed"
@@ -130,100 +113,91 @@
       <h4 class="font-semibold text-gray-800 mb-2">Carousel State (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          <strong>Navigation:</strong> {{ debugState.currentPanel + 1 }} of {{ debugState.totalPanels }}
+          <strong>Navigation:</strong> {{ debugState.currentPanel + 1 }} of
+          {{ debugState.totalPanels }}
         </div>
-        <div>
-          <strong>Progress:</strong> {{ Math.round(debugState.progress) }}%
-        </div>
-        <div>
-          <strong>Can Go Next:</strong> {{ debugState.canGoNext ? 'Yes' : 'No' }}
-        </div>
-        <div>
-          <strong>Can Go Previous:</strong> {{ debugState.canGoPrevious ? 'Yes' : 'No' }}
-        </div>
+        <div><strong>Progress:</strong> {{ Math.round(debugState.progress) }}%</div>
+        <div><strong>Can Go Next:</strong> {{ debugState.canGoNext ? 'Yes' : 'No' }}</div>
+        <div><strong>Can Go Previous:</strong> {{ debugState.canGoPrevious ? 'Yes' : 'No' }}</div>
         <div>
           <strong>Current Panel ID:</strong> {{ debugState.currentPanelData?.id || 'None' }}
         </div>
-        <div>
-          <strong>Auto-playing:</strong> {{ isAutoPlaying ? "Yes" : "No" }}
-        </div>
-        <div>
-          <strong>Speed:</strong> {{ autoPlaySpeed }}ms
-        </div>
+        <div><strong>Auto-playing:</strong> {{ isAutoPlaying ? 'Yes' : 'No' }}</div>
+        <div><strong>Speed:</strong> {{ autoPlaySpeed }}ms</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, markRaw, onMounted, onUnmounted, watch } from "vue";
-import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
-import type { CarouselPanelDefinition } from "../types";
+import { ref, computed, markRaw, onMounted, onUnmounted, watch } from 'vue'
+import { SequentialContainer, useNavigation } from '@sequential-ui/vue'
+import type { CarouselPanelDefinition } from '../types'
 
 // Icons - markRaw prevents Vue from making them reactive
 const ChevronLeftIcon = markRaw({
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>`,
-});
+})
 
 const ChevronRightIcon = markRaw({
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`,
-});
+})
 
-const currentImage = ref(0);
-const sequentialContainer = ref();
-const isAutoPlaying = ref(false);
-const autoPlaySpeed = ref(3000);
-let autoPlayInterval: NodeJS.Timeout | null = null;
+const currentImage = ref(0)
+const sequentialContainer = ref()
+const isAutoPlaying = ref(false)
+const autoPlaySpeed = ref(3000)
+let autoPlayInterval: NodeJS.Timeout | null = null
 
 const imagePanels: CarouselPanelDefinition[] = [
   {
-    id: "nature-1",
-    title: "Mountain Vista",
-    description: "Breathtaking mountain landscapes",
-    emoji: "🏔️",
+    id: 'nature-1',
+    title: 'Mountain Vista',
+    description: 'Breathtaking mountain landscapes',
+    emoji: '🏔️',
   },
   {
-    id: "nature-2",
-    title: "Ocean Waves",
-    description: "Peaceful ocean scenery",
-    emoji: "🌊",
+    id: 'nature-2',
+    title: 'Ocean Waves',
+    description: 'Peaceful ocean scenery',
+    emoji: '🌊',
   },
   {
-    id: "nature-3",
-    title: "Forest Path",
-    description: "Serene forest walkways",
-    emoji: "🌲",
+    id: 'nature-3',
+    title: 'Forest Path',
+    description: 'Serene forest walkways',
+    emoji: '🌲',
   },
   {
-    id: "nature-4",
-    title: "Desert Sunset",
-    description: "Golden desert horizons",
-    emoji: "🌵",
+    id: 'nature-4',
+    title: 'Desert Sunset',
+    description: 'Golden desert horizons',
+    emoji: '🌵',
   },
   {
-    id: "nature-5",
-    title: "Cherry Blossoms",
-    description: "Beautiful spring flowers",
-    emoji: "🌸",
+    id: 'nature-5',
+    title: 'Cherry Blossoms',
+    description: 'Beautiful spring flowers',
+    emoji: '🌸',
   },
-];
+]
 
 // Use navigation composable for auto-play (independent of template ref)
 const navigation = useNavigation(imagePanels, currentImage.value, {
   loop: true,
-});
+})
 
 // Sync with external currentImage ref
-watch(currentImage, (newValue) => {
-  navigation.goTo(newValue);
-});
+watch(currentImage, newValue => {
+  navigation.goTo(newValue)
+})
 
 watch(
   () => navigation.currentPanel.value,
-  (newValue) => {
-    currentImage.value = newValue;
-  },
-);
+  newValue => {
+    currentImage.value = newValue
+  }
+)
 
 // Reactive debug state from template ref for debug display
 const debugState = computed(() => {
@@ -241,45 +215,45 @@ const debugState = computed(() => {
     }
   }
   return sequentialContainer.value.getDebugState()
-});
+})
 
 function toggleAutoPlay() {
-  isAutoPlaying.value = !isAutoPlaying.value;
+  isAutoPlaying.value = !isAutoPlaying.value
 }
 
 function startAutoPlay() {
-  if (autoPlayInterval) return;
+  if (autoPlayInterval) return
 
   autoPlayInterval = setInterval(async () => {
-    await navigation.next();
-  }, autoPlaySpeed.value);
+    await navigation.next()
+  }, autoPlaySpeed.value)
 }
 
 function stopAutoPlay() {
   if (autoPlayInterval) {
-    clearInterval(autoPlayInterval);
-    autoPlayInterval = null;
+    clearInterval(autoPlayInterval)
+    autoPlayInterval = null
   }
 }
 
 // Watch auto-play state
-watch(isAutoPlaying, (playing) => {
+watch(isAutoPlaying, playing => {
   if (playing) {
-    startAutoPlay();
+    startAutoPlay()
   } else {
-    stopAutoPlay();
+    stopAutoPlay()
   }
-});
+})
 
 // Watch speed changes
 watch(autoPlaySpeed, () => {
   if (isAutoPlaying.value) {
-    stopAutoPlay();
-    startAutoPlay();
+    stopAutoPlay()
+    startAutoPlay()
   }
-});
+})
 
 onUnmounted(() => {
-  stopAutoPlay();
-});
+  stopAutoPlay()
+})
 </script>
