@@ -8,7 +8,8 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       '@sequential-ui/core': resolve(__dirname, '../../packages/core/src'),
-      '@sequential-ui/vue': resolve(__dirname, '../../packages/vue/src')
+      '@sequential-ui/vue': resolve(__dirname, '../../packages/vue/src'),
+      'vue': 'vue/dist/vue.esm-bundler.js'
     }
   },
   server: {
