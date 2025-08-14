@@ -4,20 +4,18 @@ Sequential UI is a headless, TypeScript-first library for building sequential us
 
 ## Installation
 
-Sequential UI is distributed as separate packages for maximum flexibility:
+**For Vue 3 Projects:**
 
 ```bash
-# Core package (framework-agnostic)
-npm install @sequential-ui/core
-
-# Vue 3 components
+# Vue package includes core as dependency
 npm install @sequential-ui/vue
 ```
 
-Or install both together:
+**For Custom Framework Integration:**
 
 ```bash
-npm install @sequential-ui/core @sequential-ui/vue
+# Core package only (for React, Svelte, etc.)
+npm install @sequential-ui/core
 ```
 
 ## Core Concepts

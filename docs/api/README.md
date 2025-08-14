@@ -7,14 +7,22 @@ Complete API documentation for Sequential UI, a headless TypeScript library for 
 ### Installation
 
 ```bash
+# Vue 3 components (includes core dependency)
+npm install @sequential-ui/vue
+
+# Framework-agnostic core (for custom integrations)
 npm install @sequential-ui/core
 ```
 
 ### Basic Import
 
 ```typescript
+// Core package
 import { SequentialManager } from '@sequential-ui/core'
 import type { SequentialConfig, SequentialPanelDefinition } from '@sequential-ui/core'
+
+// Vue package
+import { SequentialContainer, useNavigation } from '@sequential-ui/vue'
 ```
 
 ### Essential Usage
@@ -41,24 +49,24 @@ console.log(manager.currentPanel, manager.progress, manager.canGoNext)
 
 ## API Documentation
 
-### Core Classes
-
-- **[SequentialManager](./sequential-manager.md)** - Main orchestrator class for sequential navigation
-- **[NavigationManager](./navigation-manager.md)** - Low-level navigation logic and state management
-
 ### Vue 3 Components
 
 - **[SequentialContainer](./vue-components.md)** - Main Vue component for sequential navigation
 - **[useNavigation](./vue-composables.md)** - Vue composable for reactive navigation state
 
-### Type Definitions
+### Core Classes
 
-- **[Types](./types.md)** - Complete TypeScript interface and type definitions
+Sequential UI's core functionality is built on top of two main classes that provide framework-agnostic navigation logic:
+
+- **SequentialManager** - Main orchestrator class for sequential navigation
+- **NavigationManager** - Low-level navigation logic and state management
+
+These classes are fully documented with inline TypeScript definitions and examples in the [Getting Started Guide](../getting-started.md).
 
 ## Package Information
 
 - **Version**: 0.1.0
-- **Package**: `@sequential-ui/core`
+- **Packages**: `@sequential-ui/core`, `@sequential-ui/vue`
 - **License**: MIT
 - **TypeScript**: Full type definitions included
 
@@ -100,5 +108,6 @@ This is the initial API (v0.1.0) for the core package. Future versions will main
 
 ## Related Documentation
 
-- [Getting Started Guide](../getting-started.md) - Learn basic concepts and usage
-- [Vue Integration Guide](../vue-integration.md) - Complete Vue 3 integration guide (coming soon)
+- [Getting Started Guide](../getting-started.md) - Learn basic concepts and usage with complete examples
+- [Vue Components API](./vue-components.md) - Complete Vue 3 component reference
+- [Vue Composables API](./vue-composables.md) - useNavigation composable documentation

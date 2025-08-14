@@ -386,5 +386,5 @@ Override styles using class props or CSS:
 ## Related APIs
 
 - [useNavigation Composable](./vue-composables.md) - Direct access to navigation logic
-- [Core Types](./types.md) - TypeScript definitions
-- [SequentialManager](./sequential-manager.md) - Underlying navigation manager
+- [Getting Started Guide](../getting-started.md) - Core concepts and TypeScript usage examples
+- [Core Types](./types.md) - Complete TypeScript interface definitions

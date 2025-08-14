@@ -13,8 +13,11 @@ Framework-agnostic core logic for Sequential UI. Build sequential interfaces lik
 ## 📦 Installation
 
 ```bash
+# For custom framework integration (React, Svelte, etc.)
 npm install @sequential-ui/core
 ```
+
+> **Note:** If you're using Vue 3, install `@sequential-ui/vue` instead, which includes this core package as a dependency.
 
 ## 🚀 Quick Start
 

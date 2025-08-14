@@ -485,5 +485,5 @@ const navigation: UseNavigationReturn = useNavigation(panels, 0, options)
 ## Related APIs
 
 - [SequentialContainer](./vue-components.md) - Vue component using this composable
-- [SequentialManager](./sequential-manager.md) - Underlying navigation manager
-- [Core Types](./types.md) - TypeScript definitions
+- [Getting Started Guide](../getting-started.md) - Core concepts and practical examples
+- [Core Types](./types.md) - Complete TypeScript interface definitions

@@ -14,11 +14,11 @@ Vue 3 components for Sequential UI with Composition API and TypeScript support.
 ## 📦 Installation
 
 ```bash
-# Install both packages
-npm install @sequential-ui/core @sequential-ui/vue
+# Vue package includes core as dependency
+npm install @sequential-ui/vue
 
 # Or with pnpm
-pnpm add @sequential-ui/core @sequential-ui/vue
+pnpm add @sequential-ui/vue
 ```
 
 ## 🎯 Components

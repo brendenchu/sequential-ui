@@ -6,38 +6,24 @@ A modern, headless UI library for building sequential user interfaces with TypeS
 
 ### Installation
 
+**For Vue 3 Projects:**
 ```bash
-# Install both packages
-npm install @sequential-ui/core @sequential-ui/vue
+# Vue package includes core as dependency
+npm install @sequential-ui/vue
 
 # Or with pnpm
-pnpm add @sequential-ui/core @sequential-ui/vue
+pnpm add @sequential-ui/vue
+```
+
+**For Custom Framework Integration:**
+```bash
+# Core package only (for React, Svelte, etc.)
+npm install @sequential-ui/core
 ```
 
 ### Basic Usage
 
-**Core Package (Available Now):**
-
-```typescript
-import { SequentialManager } from '@sequential-ui/core'
-
-// Create manager
-const manager = new SequentialManager({
-  panels: [
-    { id: 'welcome', title: 'Welcome', content: 'Get started with Sequential UI' },
-    { id: 'features', title: 'Features', content: 'Discover what you can build' },
-    { id: 'finish', title: 'Finish', content: 'You are ready to go!' }
-  ],
-  currentPanel: 0
-})
-
-// Navigate
-await manager.next()
-console.log(manager.currentPanel)  // 1
-console.log(manager.progress)      // 66.67
-```
-
-**Vue Components:**
+**Vue 3 Components:**
 
 ```vue
 <template>
@@ -68,6 +54,27 @@ const panels = [
   { id: 'finish', title: 'Finish', content: 'You are ready to go!' }
 ]
 </script>
+```
+
+**Core Package (Framework-agnostic):**
+
+```typescript
+import { SequentialManager } from '@sequential-ui/core'
+
+// Create manager
+const manager = new SequentialManager({
+  panels: [
+    { id: 'welcome', title: 'Welcome', content: 'Get started with Sequential UI' },
+    { id: 'features', title: 'Features', content: 'Discover what you can build' },
+    { id: 'finish', title: 'Finish', content: 'You are ready to go!' }
+  ],
+  currentPanel: 0
+})
+
+// Navigate
+await manager.next()
+console.log(manager.currentPanel)  // 1
+console.log(manager.progress)      // 66.67
 ```
 
 ## 🎯 Use Cases
