@@ -156,18 +156,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, markRaw, onMounted, onUnmounted, watch } from "vue";
 import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
 import type { CarouselPanelDefinition } from "../types";
 
-// Icons
-const ChevronLeftIcon = {
+// Icons - markRaw prevents Vue from making them reactive
+const ChevronLeftIcon = markRaw({
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>`,
-};
+});
 
-const ChevronRightIcon = {
+const ChevronRightIcon = markRaw({
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`,
-};
+});
 
 const currentImage = ref(0);
 const sequentialContainer = ref();
