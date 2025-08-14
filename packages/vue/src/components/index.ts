@@ -1,1 +1,1 @@
-export { default as SequentialContainer } from "./SequentialContainer.vue";
+export { default as SequentialContainer } from './SequentialContainer.vue'

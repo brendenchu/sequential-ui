@@ -81,11 +81,7 @@
     </div>
 
     <!-- Optional Indicators -->
-    <div
-      v-if="showIndicators"
-      class="sequential-indicators"
-      :class="indicatorsClass"
-    >
+    <div v-if="showIndicators" class="sequential-indicators" :class="indicatorsClass">
       <slot
         name="indicators"
         :currentPanel="navigation.currentPanel.value"
@@ -114,35 +110,35 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type { SequentialPanelDefinition } from "@sequential-ui/core";
-import { useNavigation } from "../composables/useNavigation";
-import type { UseNavigationOptions } from "../composables/useNavigation";
+import { computed } from 'vue'
+import type { SequentialPanelDefinition } from '@sequential-ui/core'
+import { useNavigation } from '../composables/useNavigation'
+import type { UseNavigationOptions } from '../composables/useNavigation'
 
 export interface SequentialContainerProps {
-  panels: SequentialPanelDefinition[];
-  modelValue?: number;
-  loop?: boolean;
-  showControls?: boolean;
-  showProgress?: boolean;
-  showIndicators?: boolean;
-  containerClass?: string;
-  panelsClass?: string;
-  controlsClass?: string;
-  indicatorsClass?: string;
-  onBeforeNavigate?: UseNavigationOptions["onBeforeNavigate"];
-  onAfterNavigate?: UseNavigationOptions["onAfterNavigate"];
+  panels: SequentialPanelDefinition[]
+  modelValue?: number
+  loop?: boolean
+  showControls?: boolean
+  showProgress?: boolean
+  showIndicators?: boolean
+  containerClass?: string
+  panelsClass?: string
+  controlsClass?: string
+  indicatorsClass?: string
+  onBeforeNavigate?: UseNavigationOptions['onBeforeNavigate']
+  onAfterNavigate?: UseNavigationOptions['onAfterNavigate']
 }
 
 export interface SequentialContainerEmits {
-  "update:modelValue": [value: number];
+  'update:modelValue': [value: number]
   navigate: [
     event: {
-      from: number;
-      to: number;
-      panel: SequentialPanelDefinition | null;
+      from: number
+      to: number
+      panel: SequentialPanelDefinition | null
     },
-  ];
+  ]
 }
 
 const props = withDefaults(defineProps<SequentialContainerProps>(), {
@@ -151,40 +147,40 @@ const props = withDefaults(defineProps<SequentialContainerProps>(), {
   showControls: true,
   showProgress: false,
   showIndicators: false,
-  containerClass: "",
-  panelsClass: "",
-  controlsClass: "",
-  indicatorsClass: "",
-});
+  containerClass: '',
+  panelsClass: '',
+  controlsClass: '',
+  indicatorsClass: '',
+})
 
-const emit = defineEmits<SequentialContainerEmits>();
+const emit = defineEmits<SequentialContainerEmits>()
 
 // Navigation composable with event handling
 const navigation = useNavigation(props.panels, props.modelValue, {
   loop: props.loop,
   onBeforeNavigate: props.onBeforeNavigate,
-  onAfterNavigate: (event) => {
+  onAfterNavigate: event => {
     // Update v-model
-    emit("update:modelValue", event.to);
+    emit('update:modelValue', event.to)
 
     // Emit navigation event
-    emit("navigate", {
+    emit('navigate', {
       from: event.from,
       to: event.to,
       panel: event.panel,
-    });
+    })
 
     // Call user handler
     if (props.onAfterNavigate) {
-      props.onAfterNavigate(event);
+      props.onAfterNavigate(event)
     }
   },
-});
+})
 
 // Computed current panel data
 const currentPanelData = computed(() => {
-  return navigation.getCurrentPanel();
-});
+  return navigation.getCurrentPanel()
+})
 
 // Watch for external model value changes
 // Note: This would ideally use a watcher but keeping it simple for now
@@ -205,7 +201,7 @@ defineExpose({
   goTo: navigation.goTo,
   getCurrentPanel: navigation.getCurrentPanel,
   getPanel: navigation.getPanel,
-});
+})
 </script>
 
 <style scoped>

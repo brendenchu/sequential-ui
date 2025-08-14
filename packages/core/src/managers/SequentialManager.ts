@@ -16,15 +16,11 @@ export class SequentialManager {
   constructor(config: SequentialConfig) {
     this._config = { ...config }
 
-    this.navigationManager = new NavigationManager(
-      config.panels, 
-      config.currentPanel || 0, 
-      {
-        loop: config.loop,
-        onBeforeNavigate: this.handleBeforeNavigate.bind(this),
-        onAfterNavigate: this.handleAfterNavigate.bind(this),
-      }
-    )
+    this.navigationManager = new NavigationManager(config.panels, config.currentPanel || 0, {
+      loop: config.loop,
+      onBeforeNavigate: this.handleBeforeNavigate.bind(this),
+      onAfterNavigate: this.handleAfterNavigate.bind(this),
+    })
   }
 
   // Delegate navigation methods
