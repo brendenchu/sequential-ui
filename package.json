@@ -15,7 +15,7 @@
     "lint:fix": "pnpm -r run lint:fix",
     "format": "pnpm -r run format",
     "format:check": "prettier --check .",
-    "test": "pnpm -r run test",
+    "test": "pnpm -r run test:run",
     "clean": "pnpm -r run clean",
     "playground": "pnpm --filter sequential-ui-playground run dev",
     "playground:build": "pnpm --filter sequential-ui-playground run build"

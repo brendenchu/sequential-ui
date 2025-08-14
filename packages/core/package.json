@@ -42,9 +42,10 @@
   },
   "license": "MIT",
   "scripts": {
+    "prebuild": "npm run clean",
     "build": "tsc -b",
     "dev": "tsc -b --watch",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && find src -name '*.js' -o -name '*.d.ts' -o -name '*.d.ts.map' | xargs rm -f",
     "type-check": "tsc --noEmit",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
