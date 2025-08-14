@@ -2,16 +2,16 @@
 
 Vue 3 components for Sequential UI with Composition API and TypeScript support.
 
-## ✨ Features
+## Features
 
-- 🎯 **Vue 3 + Composition API**: Modern Vue development experience
-- 🎨 **Tailwind CSS**: Utility-first styling with full customization
-- ♿ **Accessible**: WCAG 2.1 AA compliant with ARIA support
-- 📱 **Touch Friendly**: Swipe gestures and mobile optimizations
-- ⌨️ **Keyboard Navigation**: Full keyboard support
-- 🔧 **TypeScript**: Complete type safety
+- **Vue 3 + Composition API**: Modern Vue development experience
+- **Tailwind CSS**: Utility-first styling with full customization
+- **Accessible**: WCAG 2.1 AA compliant with ARIA support
+- **Touch Friendly**: Swipe gestures and mobile optimizations
+- **Keyboard Navigation**: Full keyboard support
+- **TypeScript**: Complete type safety
 
-## 📦 Installation
+## Installation
 
 ```bash
 # Vue package includes core as dependency
@@ -21,12 +21,12 @@ npm install @sequential-ui/vue
 pnpm add @sequential-ui/vue
 ```
 
-## 🎯 Components
+## Components
 
 - **SequentialContainer**: Main container component with built-in navigation
 - **useNavigation**: Composable for reactive navigation state management
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Basic Usage
 
@@ -106,7 +106,7 @@ const currentPanelData = computed(() => navigation.getCurrentPanel())
 </script>
 ```
 
-## 🎨 Examples
+## Examples
 
 ### Wizard Form
 
@@ -225,7 +225,7 @@ const images = [
 </script>
 ```
 
-## 📖 Documentation
+## Documentation
 
 - [Vue Components API](../../docs/api/vue-components.md) - Complete component reference
 - [Vue Composables API](../../docs/api/vue-composables.md) - useNavigation composable
@@ -236,6 +236,6 @@ const images = [
 
 See [CONTRIBUTING.md](../../CONTRIBUTING.md) for development setup and guidelines.
 
-## 📄 License
+## License
 
 MIT © [Brenden Chu](https://github.com/brendenchu)

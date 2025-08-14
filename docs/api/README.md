@@ -94,13 +94,13 @@ onBeforeNavigate → Navigation → onAfterNavigate
 
 ## Key Features
 
-- ✅ Framework-agnostic core logic
-- ✅ Comprehensive TypeScript support
-- ✅ Async validation hooks
-- ✅ Event-driven navigation
-- ✅ Loop navigation support
-- ✅ Progress tracking
-- ✅ Panel state management
+- Framework-agnostic core logic
+- Comprehensive TypeScript support
+- Async validation hooks
+- Event-driven navigation
+- Loop navigation support
+- Progress tracking
+- Panel state management
 
 ## Migration & Compatibility
 

@@ -2,7 +2,7 @@
 
 A modern, headless UI library for building sequential user interfaces with TypeScript. Includes a framework-agnostic core and Vue 3 components for easy integration.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -77,7 +77,7 @@ console.log(manager.currentPanel)  // 1
 console.log(manager.progress)      // 66.67
 ```
 
-## 🎯 Use Cases
+## Use Cases
 
 - **Setup Wizards**: Guide users through configuration processes
 - **Form Wizards**: Break complex forms into manageable steps
@@ -86,7 +86,7 @@ console.log(manager.progress)      // 66.67
 - **Tutorial Steps**: Create interactive learning experiences
 - **Data Collection**: Multi-step surveys and questionnaires
 
-## 📦 Packages
+## Packages
 
 | Package                                | Description                   | Status     |
 |----------------------------------------|-------------------------------|------------|
@@ -99,6 +99,6 @@ console.log(manager.progress)      // 66.67
 
 We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
 
-## 📄 License
+## License
 
 MIT © [Brenden Chu](https://github.com/brendenchu)

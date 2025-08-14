@@ -2,15 +2,15 @@
 
 Framework-agnostic core logic for Sequential UI. Build sequential interfaces like wizards, steppers, and carousels with any frontend framework.
 
-## ✨ Features
+## Features
 
-- 🎯 **Framework Agnostic**: Works with React, Vue, Svelte, or vanilla JavaScript
-- 🔧 **TypeScript First**: Complete type safety and excellent IntelliSense
-- ⚡ **Lightweight**: Zero dependencies, minimal bundle size
-- 🚀 **Async Ready**: Built-in support for async validation and navigation
-- 🎛️ **Configurable**: Flexible panel definitions and navigation options
+- **Framework Agnostic**: Works with React, Vue, Svelte, or vanilla JavaScript
+- **TypeScript First**: Complete type safety and excellent IntelliSense
+- **Lightweight**: Zero dependencies, minimal bundle size
+- **Async Ready**: Built-in support for async validation and navigation
+- **Configurable**: Flexible panel definitions and navigation options
 
-## 📦 Installation
+## Installation
 
 ```bash
 # For custom framework integration (React, Svelte, etc.)
@@ -19,7 +19,7 @@ npm install @sequential-ui/core
 
 > **Note:** If you're using Vue 3, install `@sequential-ui/vue` instead, which includes this core package as a dependency.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```typescript
 import { SequentialManager } from '@sequential-ui/core'
@@ -49,7 +49,7 @@ console.log(manager.canGoNext)     // false (last panel)
 console.log(manager.progress)      // 100
 ```
 
-## 📚 API Reference
+## API Reference
 
 ### SequentialManager
 
@@ -107,7 +107,7 @@ interface SequentialPanelDefinition {
 type SequentialDirection = 'next' | 'previous' | 'none'
 ```
 
-## 🎯 Use Cases
+## Use Cases
 
 ### Form Wizard
 
@@ -168,7 +168,7 @@ const conditionalFlow = new SequentialManager({
 })
 ```
 
-## 🔧 Framework Integration
+## Framework Integration
 
 This core package is designed to be wrapped by framework-specific implementations:
 
@@ -176,6 +176,6 @@ This core package is designed to be wrapped by framework-specific implementation
 - **React**: `@sequential-ui/react` (planned)
 - **Svelte**: `@sequential-ui/svelte` (planned)
 
-## 📄 License
+## License
 
 MIT © [Brenden Chu](https://github.com/brendenchu)
