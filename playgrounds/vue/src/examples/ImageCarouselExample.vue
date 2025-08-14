@@ -130,19 +130,19 @@
       <h4 class="font-semibold text-gray-800 mb-2">Carousel State (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          <strong>Navigation:</strong> {{ navigation.currentPanel.value + 1 }} of {{ navigation.totalPanels.value }}
+          <strong>Navigation:</strong> {{ debugState.currentPanel + 1 }} of {{ debugState.totalPanels }}
         </div>
         <div>
-          <strong>Progress:</strong> {{ Math.round(navigation.progress.value) }}%
+          <strong>Progress:</strong> {{ Math.round(debugState.progress) }}%
         </div>
         <div>
-          <strong>Can Go Next:</strong> {{ navigation.canGoNext.value ? 'Yes' : 'No' }}
+          <strong>Can Go Next:</strong> {{ debugState.canGoNext ? 'Yes' : 'No' }}
         </div>
         <div>
-          <strong>Can Go Previous:</strong> {{ navigation.canGoPrevious.value ? 'Yes' : 'No' }}
+          <strong>Can Go Previous:</strong> {{ debugState.canGoPrevious ? 'Yes' : 'No' }}
         </div>
         <div>
-          <strong>Current Panel ID:</strong> {{ navigation.currentPanelData.value?.id || 'None' }}
+          <strong>Current Panel ID:</strong> {{ debugState.currentPanelData?.id || 'None' }}
         </div>
         <div>
           <strong>Auto-playing:</strong> {{ isAutoPlaying ? "Yes" : "No" }}
@@ -156,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
 import type { CarouselPanelDefinition } from "../types";
 
@@ -208,7 +208,7 @@ const imagePanels: CarouselPanelDefinition[] = [
   },
 ];
 
-// Use navigation composable for auto-play
+// Use navigation composable for auto-play (independent of template ref)
 const navigation = useNavigation(imagePanels, currentImage.value, {
   loop: true,
 });
@@ -224,6 +224,24 @@ watch(
     currentImage.value = newValue;
   },
 );
+
+// Reactive debug state from template ref for debug display
+const debugState = computed(() => {
+  if (!sequentialContainer.value) {
+    return {
+      currentPanel: 0,
+      currentPanelData: null,
+      totalPanels: 0,
+      canGoNext: false,
+      canGoPrevious: false,
+      isFirst: true,
+      isLast: false,
+      progress: 0,
+      isNavigating: false,
+    }
+  }
+  return sequentialContainer.value.getDebugState()
+});
 
 function toggleAutoPlay() {
   isAutoPlaying.value = !isAutoPlaying.value;

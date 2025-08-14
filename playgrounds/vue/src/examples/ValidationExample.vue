@@ -220,19 +220,19 @@
       <h4 class="font-semibold text-gray-800 mb-2">Validation State (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          <strong>Navigation:</strong> {{ localNavigation.currentPanel.value + 1 }} of {{ localNavigation.totalPanels.value }}
+          <strong>Navigation:</strong> {{ debugState.currentPanel + 1 }} of {{ debugState.totalPanels }}
         </div>
         <div>
-          <strong>Progress:</strong> {{ Math.round(localNavigation.progress.value) }}%
+          <strong>Progress:</strong> {{ Math.round(debugState.progress) }}%
         </div>
         <div>
-          <strong>Can Go Next:</strong> {{ localNavigation.canGoNext.value ? 'Yes' : 'No' }}
+          <strong>Can Go Next:</strong> {{ debugState.canGoNext ? 'Yes' : 'No' }}
         </div>
         <div>
-          <strong>Can Go Previous:</strong> {{ localNavigation.canGoPrevious.value ? 'Yes' : 'No' }}
+          <strong>Can Go Previous:</strong> {{ debugState.canGoPrevious ? 'Yes' : 'No' }}
         </div>
         <div>
-          <strong>Current Panel ID:</strong> {{ localNavigation.currentPanelData.value?.id || 'None' }}
+          <strong>Current Panel ID:</strong> {{ debugState.currentPanelData?.id || 'None' }}
         </div>
         <div>
           <strong>User Input:</strong> {{ JSON.stringify(userInput) }}</div>
@@ -251,8 +251,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
-import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
+import { ref, reactive, computed } from "vue";
+import { SequentialContainer } from "@sequential-ui/vue";
 import type { SequentialNavigationEvent } from "@sequential-ui/core";
 import type { PlaygroundPanelDefinition } from "../types";
 
@@ -363,14 +363,22 @@ const validationPanels: PlaygroundPanelDefinition[] = [
   },
 ];
 
-// Local navigation instance for debug state access
-const localNavigation = useNavigation(validationPanels, currentPanel.value);
-
-// Keep local navigation in sync with main navigation
-watch(currentPanel, (newValue) => {
-  if (newValue !== localNavigation.currentPanel.value) {
-    localNavigation.goTo(newValue);
+// Reactive debug state from template ref
+const debugState = computed(() => {
+  if (!sequentialContainer.value) {
+    return {
+      currentPanel: 0,
+      currentPanelData: null,
+      totalPanels: 0,
+      canGoNext: false,
+      canGoPrevious: false,
+      isFirst: true,
+      isLast: false,
+      progress: 0,
+      isNavigating: false,
+    }
   }
+  return sequentialContainer.value.getDebugState()
 });
 
 async function handleBeforeNavigate(

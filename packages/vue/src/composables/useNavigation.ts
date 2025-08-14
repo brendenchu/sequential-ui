@@ -97,9 +97,6 @@ export function useNavigation(
 
   // Function to update all reactive state
   function updateReactiveState() {
-    const oldPanel = currentPanel.value
-    const oldPanelData = currentPanelData.value
-    
     currentPanel.value = manager.currentPanel
     currentPanelData.value = manager.getCurrentPanel()
     totalPanels.value = manager.totalPanels
@@ -108,20 +105,13 @@ export function useNavigation(
     isFirst.value = manager.isFirst
     isLast.value = manager.isLast
     progress.value = manager.progress
-    console.log('[updateReactiveState] progress updated to:', progress.value)
     isNavigating.value = manager.isNavigating
-    
-    console.log('[updateReactiveState] panel changed from', oldPanel, 'to', currentPanel.value)
-    console.log('[updateReactiveState] panelData changed from', oldPanelData?.id, 'to', currentPanelData.value?.id)
   }
 
   // Navigation methods that update reactive state
   const next = async (): Promise<boolean> => {
-    console.log('[useNavigation] next() called, current panel:', currentPanel.value)
     const result = await manager.next()
-    console.log('[useNavigation] manager.next() result:', result, 'new panel:', manager.currentPanel)
     updateReactiveState()
-    console.log('[useNavigation] after updateReactiveState, currentPanelData:', currentPanelData.value)
     return result
   }
 

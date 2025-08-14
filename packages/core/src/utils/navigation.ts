@@ -55,16 +55,9 @@ export class NavigationManager implements SequentialNavigationManager {
 
   get progress(): number {
     if (this.totalPanels === 0) {
-      console.log('[NavigationManager] progress: totalPanels is 0, returning 0')
       return 0
     }
-    const result = ((this._currentPanel + 1) / this.totalPanels) * 100
-    console.log('[NavigationManager] progress calculation:', {
-      currentPanel: this._currentPanel,
-      totalPanels: this.totalPanels,
-      result
-    })
-    return result
+    return ((this._currentPanel + 1) / this.totalPanels) * 100
   }
 
   get isNavigating(): boolean {

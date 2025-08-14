@@ -160,11 +160,8 @@ const navigation = useNavigation(props.panels, props.modelValue, {
   loop: props.loop,
   onBeforeNavigate: props.onBeforeNavigate,
   onAfterNavigate: event => {
-    console.log('[SequentialContainer] onAfterNavigate fired:', event.from, '->', event.to, 'panel:', event.panel?.id)
-    
     // Update v-model
     emit('update:modelValue', event.to)
-    console.log('[SequentialContainer] emitted update:modelValue:', event.to)
 
     // Emit navigation event
     emit('navigate', {
@@ -182,9 +179,7 @@ const navigation = useNavigation(props.panels, props.modelValue, {
 
 // Use reactive current panel data from navigation
 const currentPanelData = computed(() => {
-  const panelData = navigation.currentPanelData.value
-  console.log('[SequentialContainer] currentPanelData computed, value:', panelData?.id)
-  return panelData
+  return navigation.currentPanelData.value
 })
 
 // Watch for external model value changes and sync to navigation
@@ -197,6 +192,19 @@ watch(
   },
   { immediate: true }
 )
+
+// Create a reactive debug state getter
+const getDebugState = () => ({
+  currentPanel: navigation.currentPanel.value,
+  currentPanelData: navigation.currentPanelData.value,
+  totalPanels: navigation.totalPanels.value,
+  canGoNext: navigation.canGoNext.value,
+  canGoPrevious: navigation.canGoPrevious.value,
+  isFirst: navigation.isFirst.value,
+  isLast: navigation.isLast.value,
+  progress: navigation.progress.value,
+  isNavigating: navigation.isNavigating.value,
+})
 
 // Expose navigation methods and state for template refs
 defineExpose({
@@ -213,6 +221,7 @@ defineExpose({
   goTo: navigation.goTo,
   getCurrentPanel: navigation.getCurrentPanel,
   getPanel: navigation.getPanel,
+  getDebugState,
 })
 </script>
 
