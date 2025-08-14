@@ -48,9 +48,10 @@
   },
   "license": "MIT",
   "scripts": {
+    "prebuild": "npm run clean",
     "build": "vue-tsc -b && vite build",
     "dev": "vite build --watch",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && find src -name '*.js' -o -name '*.d.ts' -o -name '*.d.ts.map' | xargs rm -f",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
