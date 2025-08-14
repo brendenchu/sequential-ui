@@ -10,7 +10,7 @@ Sequential UI is distributed as separate packages for maximum flexibility:
 # Core package (framework-agnostic)
 npm install @sequential-ui/core
 
-# Vue 3 components (optional)
+# Vue 3 components
 npm install @sequential-ui/vue
 ```
 
@@ -99,6 +99,88 @@ console.log('Can go previous:', manager.canGoPrevious)     // true/false
 console.log('Is first panel:', manager.isFirst)            // true/false
 console.log('Is last panel:', manager.isLast)              // true/false
 console.log('Progress:', manager.progress)                 // 0-100
+```
+
+## Vue 3 Integration
+
+For Vue applications, use the `SequentialContainer` component for a complete UI solution:
+
+```vue
+<template>
+  <SequentialContainer
+    :panels="panels"
+    v-model="currentPanel"
+    :show-controls="true"
+    :show-progress="true"
+    :show-indicators="true"
+  >
+    <template #panel="{ panel, index }">
+      <div class="p-8 text-center">
+        <h2 class="text-2xl font-bold mb-4">{{ panel.title }}</h2>
+        <p class="text-gray-600">{{ panel.content }}</p>
+      </div>
+    </template>
+  </SequentialContainer>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { SequentialContainer } from '@sequential-ui/vue'
+
+const currentPanel = ref(0)
+const panels = [
+  { id: 'welcome', title: 'Welcome', content: 'Get started with Sequential UI' },
+  { id: 'features', title: 'Features', content: 'Discover what you can build' },
+  { id: 'finish', title: 'Finish', content: 'You are ready to go!' }
+]
+</script>
+```
+
+### Vue Composable Usage
+
+For more control, use the `useNavigation` composable directly:
+
+```vue
+<template>
+  <div>
+    <div class="panel">
+      <h3>{{ currentPanelData?.title }}</h3>
+      <p>Panel {{ navigation.currentPanel.value + 1 }} of {{ navigation.totalPanels.value }}</p>
+    </div>
+    
+    <div class="controls">
+      <button 
+        @click="navigation.previous" 
+        :disabled="!navigation.canGoPrevious.value"
+      >
+        Previous
+      </button>
+      <button 
+        @click="navigation.next" 
+        :disabled="!navigation.canGoNext.value"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useNavigation } from '@sequential-ui/vue'
+
+const panels = [
+  { id: 'step-1', title: 'Welcome' },
+  { id: 'step-2', title: 'Setup' },
+  { id: 'step-3', title: 'Complete' }
+]
+
+const navigation = useNavigation(panels, 0, {
+  loop: false
+})
+
+const currentPanelData = computed(() => navigation.getCurrentPanel())
+</script>
 ```
 
 ### Panel Management
@@ -223,7 +305,157 @@ manager.destroy()
 
 ## Examples
 
-### Simple Wizard
+### Vue Wizard Example
+
+```vue
+<template>
+  <SequentialContainer
+    :panels="wizardPanels"
+    v-model="currentStep"
+    :show-progress="true"
+    :on-before-navigate="validateStep"
+  >
+    <template #panel="{ panel, index }">
+      <div class="p-6">
+        <h3 class="text-xl font-bold mb-4">{{ panel.title }}</h3>
+        
+        <!-- Step-specific content -->
+        <div v-if="panel.id === 'personal-info'" class="space-y-4">
+          <input v-model="formData.name" placeholder="Name" class="w-full p-2 border rounded" />
+          <input v-model="formData.email" placeholder="Email" class="w-full p-2 border rounded" />
+        </div>
+        
+        <div v-else-if="panel.id === 'preferences'" class="space-y-4">
+          <label class="flex items-center">
+            <input type="checkbox" v-model="formData.notifications" class="mr-2" />
+            Enable notifications
+          </label>
+        </div>
+        
+        <div v-else-if="panel.id === 'review'" class="space-y-2">
+          <p><strong>Name:</strong> {{ formData.name }}</p>
+          <p><strong>Email:</strong> {{ formData.email }}</p>
+          <p><strong>Notifications:</strong> {{ formData.notifications ? 'Yes' : 'No' }}</p>
+        </div>
+      </div>
+    </template>
+  </SequentialContainer>
+</template>
+
+<script setup lang="ts">
+import { ref, reactive } from 'vue'
+import { SequentialContainer } from '@sequential-ui/vue'
+import type { SequentialNavigationEvent } from '@sequential-ui/core'
+
+const currentStep = ref(0)
+const formData = reactive({
+  name: '',
+  email: '',
+  notifications: true
+})
+
+const wizardPanels = [
+  { id: 'welcome', title: 'Welcome' },
+  { id: 'personal-info', title: 'Personal Information' },
+  { id: 'preferences', title: 'Preferences' },
+  { id: 'review', title: 'Review' },
+  { id: 'complete', title: 'Complete' }
+]
+
+async function validateStep(event: SequentialNavigationEvent): Promise<boolean> {
+  if (event.from === 1 && !formData.name.trim()) {
+    alert('Name is required')
+    return false
+  }
+  return true
+}
+</script>
+```
+
+### Vue Carousel Example
+
+```vue
+<template>
+  <SequentialContainer
+    :panels="images"
+    v-model="currentImage"
+    :loop="true"
+    :show-indicators="true"
+    container-class="relative overflow-hidden rounded-lg"
+  >
+    <template #panel="{ panel }">
+      <div class="aspect-video bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+        <div class="text-white text-center">
+          <div class="text-4xl mb-2">{{ panel.icon }}</div>
+          <h3 class="text-xl font-bold">{{ panel.title }}</h3>
+        </div>
+      </div>
+    </template>
+    
+    <template #controls="{ canGoNext, canGoPrevious, next, previous }">
+      <button 
+        @click="previous"
+        :disabled="!canGoPrevious"
+        class="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-black bg-opacity-50 text-white rounded-full"
+      >
+        ←
+      </button>
+      <button 
+        @click="next"
+        :disabled="!canGoNext"
+        class="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-black bg-opacity-50 text-white rounded-full"
+      >
+        →
+      </button>
+    </template>
+  </SequentialContainer>
+  
+  <div class="mt-4 text-center">
+    <button @click="toggleAutoPlay" class="px-4 py-2 bg-blue-600 text-white rounded">
+      {{ isAutoPlaying ? 'Pause' : 'Play' }}
+    </button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, watch, onUnmounted } from 'vue'
+import { SequentialContainer, useNavigation } from '@sequential-ui/vue'
+
+const currentImage = ref(0)
+const isAutoPlaying = ref(false)
+
+const images = [
+  { id: 'img1', title: 'Nature', icon: '🌲' },
+  { id: 'img2', title: 'Ocean', icon: '🌊' },
+  { id: 'img3', title: 'Mountains', icon: '🏔️' }
+]
+
+// Auto-play functionality
+const navigation = useNavigation(images, 0, { loop: true })
+let autoPlayInterval: NodeJS.Timeout | null = null
+
+watch(isAutoPlaying, (playing) => {
+  if (playing) {
+    autoPlayInterval = setInterval(() => navigation.next(), 3000)
+  } else if (autoPlayInterval) {
+    clearInterval(autoPlayInterval)
+    autoPlayInterval = null
+  }
+})
+
+function toggleAutoPlay() {
+  isAutoPlaying.value = !isAutoPlaying.value
+}
+
+onUnmounted(() => {
+  if (autoPlayInterval) clearInterval(autoPlayInterval)
+})
+</script>
+```
+
+### Core JavaScript Example
+
+For non-Vue applications, use the core SequentialManager:
 
 ```typescript
 const wizardManager = new SequentialManager({
@@ -247,24 +479,4 @@ async function handleNext() {
     showValidationErrors()
   }
 }
-```
-
-### Image Carousel
-
-```typescript
-const carouselManager = new SequentialManager({
-  panels: [
-    { id: 'image-1' },
-    { id: 'image-2' },
-    { id: 'image-3' }
-  ],
-  currentPanel: 0,
-  loop: true  // Allow infinite scrolling
-})
-
-// Auto-advance every 3 seconds
-setInterval(async () => {
-  await carouselManager.next()
-  updateCarouselDisplay()
-}, 3000)
 ```

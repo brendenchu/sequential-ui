@@ -37,14 +37,16 @@ console.log(manager.currentPanel)  // 1
 console.log(manager.progress)      // 66.67
 ```
 
-**Vue Components (Coming Soon):**
+**Vue Components:**
 
 ```vue
 <template>
   <SequentialContainer
     :panels="panels"
     v-model="currentPanel"
-    :controls="{ showIndicator: true, showProgress: true }"
+    :show-controls="true"
+    :show-progress="true"
+    :show-indicators="true"
   >
     <template #panel="{ panel, index }">
       <div class="p-8 text-center">
@@ -57,10 +59,14 @@ console.log(manager.progress)      // 66.67
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { SequentialContainer } from '@sequential-ui/vue' // Coming soon
+import { SequentialContainer } from '@sequential-ui/vue'
 
 const currentPanel = ref(0)
-const panels = [/* panel definitions */]
+const panels = [
+  { id: 'welcome', title: 'Welcome', content: 'Get started with Sequential UI' },
+  { id: 'features', title: 'Features', content: 'Discover what you can build' },
+  { id: 'finish', title: 'Finish', content: 'You are ready to go!' }
+]
 </script>
 ```
 
@@ -77,8 +83,8 @@ const panels = [/* panel definitions */]
 
 | Package                                | Description                   | Status     |
 |----------------------------------------|-------------------------------|------------|
-| [@sequential-ui/core](./packages/core) | Framework-agnostic core logic | ✅ **Alpha**  |
-| [@sequential-ui/vue](./packages/vue)   | Vue 3 components              | 🚧 **Scaffold Only** |
+| [@sequential-ui/core](./packages/core) | Framework-agnostic core logic | ✅ **Ready**  |
+| [@sequential-ui/vue](./packages/vue)   | Vue 3 components              | ✅ **Ready** |
 | @sequential-ui/react                   | React components              | 🔄 Planned |
 | @sequential-ui/svelte                  | Svelte components             | 🔄 Planned |
 

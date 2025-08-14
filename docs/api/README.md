@@ -46,6 +46,11 @@ console.log(manager.currentPanel, manager.progress, manager.canGoNext)
 - **[SequentialManager](./sequential-manager.md)** - Main orchestrator class for sequential navigation
 - **[NavigationManager](./navigation-manager.md)** - Low-level navigation logic and state management
 
+### Vue 3 Components
+
+- **[SequentialContainer](./vue-components.md)** - Main Vue component for sequential navigation
+- **[useNavigation](./vue-composables.md)** - Vue composable for reactive navigation state
+
 ### Type Definitions
 
 - **[Types](./types.md)** - Complete TypeScript interface and type definitions
@@ -96,4 +101,4 @@ This is the initial API (v0.1.0) for the core package. Future versions will main
 ## Related Documentation
 
 - [Getting Started Guide](../getting-started.md) - Learn basic concepts and usage
-- [Vue Integration](../vue-integration.md) - Using with Vue 3 (coming soon)
+- [Vue Integration Guide](../vue-integration.md) - Complete Vue 3 integration guide (coming soon)
