@@ -7,23 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-08-14
+
 ### Added
 - Framework-agnostic SequentialManager and NavigationManager classes
 - Complete TypeScript type definitions and interfaces
 - Panel management with validation hooks (canNavigateFrom/canNavigateTo)
-- Navigation state tracking (currentPanel, progress, canGoNext/Previous)
+- Navigation state tracking (currentPanel, progress, canGoNext/canGoPrevious)
 - Event-driven architecture with onBeforeNavigate/onAfterNavigate hooks
 - Loop navigation support
 - ESM module exports with proper .js extensions
-- Comprehensive API documentation in docs/api/
-- Basic panel validation and disabled panel support
-
-### Developer Experience
-- Full TypeScript compilation and type checking
+- Disabled panel support
+- SequentialContainer.vue component with flexible slot system
+- useNavigation composable with reactive state management
+- v-model:currentPanel two-way binding support
+- Built-in navigation controls, progress bars, and indicators
+- Tailwind CSS styling with customizable classes
+- Interactive playground with 4 example implementations
+- Auto-play carousel functionality
+- Form validation patterns with async support
+- Real-time debug state containers
+- Vitest testing suite with 51 unit tests
+- Complete API documentation in docs/api/
+- Getting started guide with Vue examples
 - ESLint and Prettier configuration
-- Development and build scripts via pnpm
-- Monorepo structure with workspace configuration
+- pnpm monorepo structure with workspace dependencies
 
-## [0.1.0] - Coming Soon
-
-**Note**: 0.1.0 will be released when Vue components are ready, providing the first usable version with UI components.
+### Fixed
+- Vue reactivity issues in debug state containers
+- Template compilation warnings in Vite
+- TypeScript type safety across playground examples
+- Icon component performance with markRaw optimization
