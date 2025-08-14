@@ -1,6 +1,7 @@
 <template>
   <div>
     <SequentialContainer
+      ref="sequentialContainer"
       :panels="wizardPanels"
       v-model="currentPanel"
       :show-controls="true"
@@ -145,20 +146,56 @@
 
     <!-- Debug Info -->
     <div class="mt-6 p-4 bg-gray-100 rounded-lg">
-      <h4 class="font-semibold text-gray-800 mb-2">Wizard State</h4>
+      <h4 class="font-semibold text-gray-800 mb-2">Wizard State (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          Current Panel: {{ currentPanel + 1 }} of {{ wizardPanels.length }}
+          <strong>Navigation:</strong> {{ localNavigation.currentPanel.value + 1 }} of {{ localNavigation.totalPanels.value }}
         </div>
-        <div>Form Data: {{ JSON.stringify(formData, null, 2) }}</div>
+        <div>
+          <strong>Progress:</strong> {{ Math.round(localNavigation.progress.value) }}%
+        </div>
+        <div>
+          <strong>Can Go Next:</strong> {{ localNavigation.canGoNext.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Can Go Previous:</strong> {{ localNavigation.canGoPrevious.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Is First:</strong> {{ localNavigation.isFirst.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Is Last:</strong> {{ localNavigation.isLast.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Current Panel ID:</strong> {{ localNavigation.currentPanelData.value?.id || 'None' }}
+        </div>
+        <div>
+          <strong>Form Data:</strong> {{ JSON.stringify(formData, null, 2) }}
+        </div>
+      </div>
+      
+      <!-- Debug Comparison Section -->
+      <div class="mt-4 pt-4 border-t border-gray-300">
+        <h5 class="font-medium text-gray-700 mb-2">Template Ref Comparison:</h5>
+        <div class="text-xs text-gray-500 space-y-1">
+          <div v-if="sequentialContainer">
+            <strong>Template Ref Progress:</strong> {{ Math.round(sequentialContainer.progress?.value || 0) }}%
+          </div>
+          <div v-if="sequentialContainer">
+            <strong>Template Ref Current:</strong> {{ (sequentialContainer.currentPanel?.value || 0) + 1 }}
+          </div>
+          <div v-if="!sequentialContainer">
+            <strong>Template Ref:</strong> Not Ready
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { SequentialContainer } from "@sequential-ui/vue";
+import { ref, watch } from "vue";
+import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
 import type { PlaygroundPanelDefinition } from "../types";
 
 // Icons (using heroicons outline)
@@ -183,6 +220,7 @@ const HomeIcon = {
 };
 
 const currentPanel = ref(0);
+const sequentialContainer = ref();
 
 const formData = ref({
   name: "",
@@ -223,4 +261,15 @@ const wizardPanels: PlaygroundPanelDefinition[] = [
     icon: CheckIcon,
   },
 ];
+
+// Local navigation instance for debug state access
+const localNavigation = useNavigation(wizardPanels, currentPanel.value);
+
+// Keep local navigation in sync with main navigation
+watch(currentPanel, (newValue) => {
+  console.log('[BasicWizardExample] currentPanel changed to:', newValue);
+  if (newValue !== localNavigation.currentPanel.value) {
+    localNavigation.goTo(newValue);
+  }
+});
 </script>

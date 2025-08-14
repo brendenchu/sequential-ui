@@ -110,7 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import type { SequentialPanelDefinition } from '@sequential-ui/core'
 import { useNavigation } from '../composables/useNavigation'
 import type { UseNavigationOptions } from '../composables/useNavigation'
@@ -160,8 +160,11 @@ const navigation = useNavigation(props.panels, props.modelValue, {
   loop: props.loop,
   onBeforeNavigate: props.onBeforeNavigate,
   onAfterNavigate: event => {
+    console.log('[SequentialContainer] onAfterNavigate fired:', event.from, '->', event.to, 'panel:', event.panel?.id)
+    
     // Update v-model
     emit('update:modelValue', event.to)
+    console.log('[SequentialContainer] emitted update:modelValue:', event.to)
 
     // Emit navigation event
     emit('navigate', {
@@ -177,14 +180,23 @@ const navigation = useNavigation(props.panels, props.modelValue, {
   },
 })
 
-// Computed current panel data
+// Use reactive current panel data from navigation
 const currentPanelData = computed(() => {
-  return navigation.getCurrentPanel()
+  const panelData = navigation.currentPanelData.value
+  console.log('[SequentialContainer] currentPanelData computed, value:', panelData?.id)
+  return panelData
 })
 
-// Watch for external model value changes
-// Note: This would ideally use a watcher but keeping it simple for now
-// Users can control navigation through the navigation methods
+// Watch for external model value changes and sync to navigation
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue !== undefined && newValue !== navigation.currentPanel.value) {
+      navigation.goTo(newValue)
+    }
+  },
+  { immediate: true }
+)
 
 // Expose navigation methods and state for template refs
 defineExpose({

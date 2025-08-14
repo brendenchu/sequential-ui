@@ -1,6 +1,7 @@
 <template>
   <div>
     <SequentialContainer
+      ref="sequentialContainer"
       :panels="imagePanels"
       v-model="currentImage"
       :loop="true"
@@ -126,13 +127,29 @@
 
     <!-- Debug Info -->
     <div class="mt-4 p-4 bg-gray-100 rounded-lg">
-      <h4 class="font-semibold text-gray-800 mb-2">State</h4>
+      <h4 class="font-semibold text-gray-800 mb-2">Carousel State (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          Current Image: {{ currentImage + 1 }} of {{ imagePanels.length }}
+          <strong>Navigation:</strong> {{ navigation.currentPanel.value + 1 }} of {{ navigation.totalPanels.value }}
         </div>
-        <div>Auto-playing: {{ isAutoPlaying ? "Yes" : "No" }}</div>
-        <div>Speed: {{ autoPlaySpeed }}ms</div>
+        <div>
+          <strong>Progress:</strong> {{ Math.round(navigation.progress.value) }}%
+        </div>
+        <div>
+          <strong>Can Go Next:</strong> {{ navigation.canGoNext.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Can Go Previous:</strong> {{ navigation.canGoPrevious.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Current Panel ID:</strong> {{ navigation.currentPanelData.value?.id || 'None' }}
+        </div>
+        <div>
+          <strong>Auto-playing:</strong> {{ isAutoPlaying ? "Yes" : "No" }}
+        </div>
+        <div>
+          <strong>Speed:</strong> {{ autoPlaySpeed }}ms
+        </div>
       </div>
     </div>
   </div>
@@ -153,6 +170,7 @@ const ChevronRightIcon = {
 };
 
 const currentImage = ref(0);
+const sequentialContainer = ref();
 const isAutoPlaying = ref(false);
 const autoPlaySpeed = ref(3000);
 let autoPlayInterval: NodeJS.Timeout | null = null;

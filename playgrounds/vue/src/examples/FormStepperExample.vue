@@ -1,6 +1,7 @@
 <template>
   <div>
     <SequentialContainer
+      ref="sequentialContainer"
       :panels="formPanels"
       v-model="currentStep"
       :show-controls="false"
@@ -318,10 +319,25 @@
 
     <!-- Form State Debug -->
     <div class="mt-6 p-4 bg-gray-100 rounded-lg">
-      <h4 class="font-semibold text-gray-800 mb-2">Form Validation</h4>
+      <h4 class="font-semibold text-gray-800 mb-2">Form Validation (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          Current Step: {{ currentStep + 1 }} of {{ formPanels.length }}
+          <strong>Navigation:</strong> {{ localNavigation.currentPanel.value + 1 }} of {{ localNavigation.totalPanels.value }}
+        </div>
+        <div>
+          <strong>Progress:</strong> {{ Math.round(localNavigation.progress.value) }}%
+        </div>
+        <div>
+          <strong>Can Go Next:</strong> {{ localNavigation.canGoNext.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Can Go Previous:</strong> {{ localNavigation.canGoPrevious.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Current Panel ID:</strong> {{ localNavigation.currentPanelData.value?.id || 'None' }}
+        </div>
+        <div>
+          <strong>Current Step:</strong> {{ currentStep + 1 }} of {{ formPanels.length }}
         </div>
         <div>Validation Errors: {{ Object.keys(formErrors).length }}</div>
         <div v-if="Object.keys(formErrors).length > 0" class="text-red-600">
@@ -333,11 +349,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { SequentialContainer } from "@sequential-ui/vue";
+import { ref, computed, watch } from "vue";
+import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
 import type { FormPanelDefinition } from "../types";
 
 const currentStep = ref(0);
+const sequentialContainer = ref();
 
 const formData = ref({
   firstName: "",
@@ -370,6 +387,16 @@ const formPanels: FormPanelDefinition[] = [
     description: "Confirm your information",
   },
 ];
+
+// Local navigation instance for debug state access
+const localNavigation = useNavigation(formPanels, currentStep.value);
+
+// Keep local navigation in sync with main navigation
+watch(currentStep, (newValue) => {
+  if (newValue !== localNavigation.currentPanel.value) {
+    localNavigation.goTo(newValue);
+  }
+});
 
 function validatePersonalInfo() {
   const errors: Record<string, string> = {};

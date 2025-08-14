@@ -1,4 +1,4 @@
-import { ref, onUnmounted, type Ref } from 'vue'
+import { ref, onUnmounted, watch, type Ref } from 'vue'
 import { SequentialManager } from '@sequential-ui/core'
 import type {
   SequentialConfig,
@@ -15,6 +15,7 @@ export interface UseNavigationOptions {
 export interface UseNavigationReturn {
   // Reactive state
   currentPanel: Ref<number>
+  currentPanelData: Ref<SequentialPanelDefinition | null>
   totalPanels: Ref<number>
   canGoNext: Ref<boolean>
   canGoPrevious: Ref<boolean>
@@ -85,6 +86,7 @@ export function useNavigation(
 
   // Reactive state
   const currentPanel = ref(manager.currentPanel)
+  const currentPanelData = ref(manager.getCurrentPanel())
   const totalPanels = ref(manager.totalPanels)
   const canGoNext = ref(manager.canGoNext)
   const canGoPrevious = ref(manager.canGoPrevious)
@@ -95,20 +97,31 @@ export function useNavigation(
 
   // Function to update all reactive state
   function updateReactiveState() {
+    const oldPanel = currentPanel.value
+    const oldPanelData = currentPanelData.value
+    
     currentPanel.value = manager.currentPanel
+    currentPanelData.value = manager.getCurrentPanel()
     totalPanels.value = manager.totalPanels
     canGoNext.value = manager.canGoNext
     canGoPrevious.value = manager.canGoPrevious
     isFirst.value = manager.isFirst
     isLast.value = manager.isLast
     progress.value = manager.progress
+    console.log('[updateReactiveState] progress updated to:', progress.value)
     isNavigating.value = manager.isNavigating
+    
+    console.log('[updateReactiveState] panel changed from', oldPanel, 'to', currentPanel.value)
+    console.log('[updateReactiveState] panelData changed from', oldPanelData?.id, 'to', currentPanelData.value?.id)
   }
 
   // Navigation methods that update reactive state
   const next = async (): Promise<boolean> => {
+    console.log('[useNavigation] next() called, current panel:', currentPanel.value)
     const result = await manager.next()
+    console.log('[useNavigation] manager.next() result:', result, 'new panel:', manager.currentPanel)
     updateReactiveState()
+    console.log('[useNavigation] after updateReactiveState, currentPanelData:', currentPanelData.value)
     return result
   }
 
@@ -132,9 +145,13 @@ export function useNavigation(
 
   // Watch for changes to panels prop if it's a ref
   if (!Array.isArray(panels)) {
-    // TODO: Add watch when panels ref changes
-    // This would require importing { watch } from 'vue'
-    // For now, users can call updatePanels manually
+    watch(
+      panels,
+      (newPanels) => {
+        updatePanels(newPanels)
+      },
+      { deep: true }
+    )
   }
 
   // Cleanup on unmount
@@ -145,6 +162,7 @@ export function useNavigation(
   return {
     // Reactive state
     currentPanel,
+    currentPanelData,
     totalPanels,
     canGoNext,
     canGoPrevious,

@@ -1,6 +1,7 @@
 <template>
   <div>
     <SequentialContainer
+      ref="sequentialContainer"
       :panels="validationPanels"
       v-model="currentPanel"
       :show-controls="true"
@@ -216,12 +217,25 @@
 
     <!-- Debug Info -->
     <div class="mt-4 p-4 bg-gray-100 rounded-lg">
-      <h4 class="font-semibold text-gray-800 mb-2">Current State</h4>
+      <h4 class="font-semibold text-gray-800 mb-2">Validation State (Direct Navigation)</h4>
       <div class="text-sm text-gray-600 space-y-1">
         <div>
-          Current Panel: {{ currentPanel + 1 }} of {{ validationPanels.length }}
+          <strong>Navigation:</strong> {{ localNavigation.currentPanel.value + 1 }} of {{ localNavigation.totalPanels.value }}
         </div>
-        <div>User Input: {{ JSON.stringify(userInput) }}</div>
+        <div>
+          <strong>Progress:</strong> {{ Math.round(localNavigation.progress.value) }}%
+        </div>
+        <div>
+          <strong>Can Go Next:</strong> {{ localNavigation.canGoNext.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Can Go Previous:</strong> {{ localNavigation.canGoPrevious.value ? 'Yes' : 'No' }}
+        </div>
+        <div>
+          <strong>Current Panel ID:</strong> {{ localNavigation.currentPanelData.value?.id || 'None' }}
+        </div>
+        <div>
+          <strong>User Input:</strong> {{ JSON.stringify(userInput) }}</div>
         <div>Settings: {{ JSON.stringify(userSettings) }}</div>
         <div>
           Validation Errors:
@@ -237,12 +251,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from "vue";
-import { SequentialContainer } from "@sequential-ui/vue";
+import { ref, reactive, watch } from "vue";
+import { SequentialContainer, useNavigation } from "@sequential-ui/vue";
 import type { SequentialNavigationEvent } from "@sequential-ui/core";
 import type { PlaygroundPanelDefinition } from "../types";
 
 const currentPanel = ref(0);
+const sequentialContainer = ref();
 const isValidatingUsername = ref(false);
 
 const userInput = reactive({
@@ -347,6 +362,16 @@ const validationPanels: PlaygroundPanelDefinition[] = [
     description: "All validation scenarios completed",
   },
 ];
+
+// Local navigation instance for debug state access
+const localNavigation = useNavigation(validationPanels, currentPanel.value);
+
+// Keep local navigation in sync with main navigation
+watch(currentPanel, (newValue) => {
+  if (newValue !== localNavigation.currentPanel.value) {
+    localNavigation.goTo(newValue);
+  }
+});
 
 async function handleBeforeNavigate(
   event: SequentialNavigationEvent,
